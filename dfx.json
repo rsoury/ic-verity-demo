@@ -1,0 +1,20 @@
+{
+  "canisters": {
+    "canister": {
+      "candid": "canister/canister.did",
+      "type": "custom",
+      "shrink": true,
+      "gzip": true,
+      "wasm": "target/wasm32-unknown-unknown/release/canister.wasm",
+      "build": [
+        "cargo build --target wasm32-unknown-unknown --release -p canister",
+        "candid-extractor target/wasm32-unknown-unknown/release/canister.wasm > canister/canister.did"
+      ],
+      "metadata": [
+        {
+          "name": "candid:service"
+        }
+      ]
+    }
+  }
+}

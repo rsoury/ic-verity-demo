@@ -1,0 +1,3 @@
+[workspace]
+members = ["canister"]
+resolver = "2"

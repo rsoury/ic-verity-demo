@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  proxy:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - PROXY_TARGET=http://target:3000
+      - PORT=8080
+      - NODE_ENV=development
+      - LOG_LEVEL=info
+    volumes:
+      - ./api:/app/api
+      - ./config.env.example:/app/.env
+    depends_on:
+      - target
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "bun", "run", "-e", "fetch('http://localhost:8080/health').then(r => r.ok ? 0 : 1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  target:
+    image: nginx:alpine
+    ports:
+      - "3000:80"
+    volumes:
+      - ./target-nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+
+networks:
+  default:
+    name: ic-verity-proxy

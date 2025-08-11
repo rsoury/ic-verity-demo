@@ -1,0 +1,8 @@
+type HttpHeader = record { value : text; name : text };
+type HttpRequestResult = record {
+  status : nat;
+  body : blob;
+  headers : vec HttpHeader;
+};
+type Result = variant { Ok : HttpRequestResult; Err : text };
+service : { canister_http : () -> (Result); greet : (text) -> (text) query }
