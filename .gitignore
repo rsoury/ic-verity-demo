@@ -1,0 +1,83 @@
+# --- Rust / Cargo ---
+**/target/
+#! For libraries you might ignore Cargo.lock, but this is an app so we keep it tracked
+#Cargo.lock
+
+# Uncomment the line above if this is a library. For applications, you may wish to commit Cargo.lock
+
+# --- Internet Computer / DFX ---
+.dfx/
+canister_ids.json
+
+# --- Node / Bun ---
+node_modules/
+dist/
+build/
+out/
+.next/
+.nuxt/
+.vercel/
+.turbo/
+.cache/
+.parcel-cache/
+coverage/
+*.tsbuildinfo
+.eslintcache
+.prettier-cache
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+#! Keep Bun lockfile tracked for reproducible installs
+#bun.lockb
+
+# --- Env files (keep example) ---
+.env
+.env.*
+!.env.example
+
+# --- Editors / IDEs ---
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# --- OS junk ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Icon?
+.Spotlight-V100
+.Trashes
+__MACOSX/
+
+# --- Vim / Emacs ---
+*~
+*.swp
+*.swo
+*.swn
+*.swm
+.#*
+
+# --- Logs & temp ---
+*.log
+tmp/
+temp/
+.tmp/
+
+# --- Certificates & keys (avoid committing secrets) ---
+*.pem
+*.key
+*.p12
+*.crt
+*.cert
+*.csr
+*.der
+
+# --- Misc binaries / debug ---
+*.dSYM/
+
