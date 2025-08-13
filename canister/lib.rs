@@ -7,8 +7,7 @@ use candid::Principal;
 use candid::CandidType;
 // use verity_ic::verify::types::ProofResponse;
 
-// const VERITY_VERIFIER_CANISTER: &str = "yf57k-fyaaa-aaaaj-azw2a-cai";
-const VERITY_VERIFIER_CANISTER: &str = "umunu-kh777-77774-qaaca-cai"; /// ! Insert your local Verity Verifier Canister ID here
+const VERITY_VERIFIER_CANISTER: &str = "yf57k-fyaaa-aaaaj-azw2a-cai"; /// ? Replace with local Verity Verifier Canister ID if required
 const VERITY_NOTARY_PUB_KEY: &str = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE9MsHbWBopn6RcLJU2g0cHtet6eJ5\nqWpNlRkhyuk6etCycIUYe7iv/khvHfOTOTwG8yfzGdQMJz9kehb7MUzCRg==\n-----END PUBLIC KEY-----";
 // const LOCAL_PROXY_URL: &str = "http://localhost:8080";
 const LOCAL_PROXY_URL: &str = "https://rnaew-58-111-92-108.a.free.pinggy.link"; ///! Insert your ngrok or pinggy link here...
