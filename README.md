@@ -62,7 +62,7 @@ Read more: [https://docs.verity.usher.so/](https://docs.verity.usher.so/)
    dfx deps deploy
    ```
    
-   **Note**: If this step fails, please refer to the [Verity Managed Verifier](https://github.com/usherlabs/verity-dp/tree/main/ic/managed/verifier) to build and deploy it on your local IC node (which should be running via `dfx start`).
+   **Note**: If this step fails with the error outlined below, please refer to the [Verity Managed Verifier](https://github.com/usherlabs/verity-dp/tree/main/ic/managed/verifier) to build and deploy it on your local IC node (which should be running via `dfx start`).
 
 8. Deploy the demo canister
 
@@ -114,3 +114,40 @@ Health and config endpoints are available at:
 - When tunnelling with ngrok, always use the HTTPS URL and remember to update `LOCAL_PROXY_URL` if the tunnel changes.
 - If you encounter a candid extraction error during build, install `candid-extractor` and retry.
 - `data: "Error: Server too busy right now, please back off\n",` may occur due to random.org rate limits conflicting with the MPC connection.
+
+### `dfx deps deploy` Failure
+
+```
+~/dev/ic-verity-demo main +3 !5 ?1 ❯ dfx deps deploy verity_verifier                                                                                                                                                               ✘ 255 09:08:13 AM
+Error: Failed to create and install canister yf57k-fyaaa-aaaaj-azw2a-cai
+Caused by: Failed to create canister yf57k-fyaaa-aaaaj-azw2a-cai
+Caused by: Failed to read controllers of canister yf57k-fyaaa-aaaaj-azw2a-cai.
+Caused by: The replica returned an HTTP Error: Http Error: status 400 Bad Request, content type "text/plain", content: Canister yf57k-fyaaa-aaaaj-azw2a-cai does not belong to any subnet.
+```
+
+As per Kappa AI via [Internet Computer Docs](https://internetcomputer.org/docs/):
+
+```plaintext
+The error you are seeing occurs because when you use `dfx deps deploy` to deploy a dependency with a mainnet canister ID (e.g., `yf57k-fyaaa-aaaaj-azw2a-cai`) to your local replica, the local replica does not recognize this canister ID as belonging to any subnet. By default, the local replica only knows about canisters it has created itself, and it manages its own canister ID space. Mainnet canister IDs are not automatically mapped to local subnets.
+
+However, the new `dfx deps` workflow is designed to allow you to pull a mainnet canister (including its Wasm and Candid interface) and deploy it locally with the same canister ID, so you can test your code against a local instance that matches the mainnet interface and behavior. The process is as follows:
+
+1. **Declare the dependency in your `dfx.json`** with `"type": "pull"` and the mainnet canister ID.
+2. **Run `dfx deps pull`** to fetch the Wasm and Candid from the mainnet.
+3. **Run `dfx deps init`** to set any required init arguments.
+4. **Run `dfx deps deploy`** to deploy the dependency locally.
+
+If you have successfully pulled and initialized the dependency, but get the "does not belong to any subnet" error on deploy, it usually means the local replica is not able to create a canister with the specified mainnet ID. This can happen if:
+
+- The local replica is not configured to allow creation of canisters with arbitrary IDs.
+- There is a mismatch between the canister ID space of the local replica and the mainnet.
+
+**According to the official documentation,** `dfx deps deploy` should create the dependency in your local environment with the same mainnet canister ID, and then install the downloaded Wasm. If this fails, it may be due to a limitation or bug in your current version of `dfx`, or a misconfiguration in your local environment. The documentation does not specify additional steps if this error occurs, but the intended workflow is as described above [Using dfx deps to pull third-party canisters](https://internetcomputer.org/docs/building-apps/advanced/using-third-party-canisters#pulling-a-third-party-canister-into-your-project) [Blog: Introducing dfx deps!](https://internetcomputer.org/blog/features/dfx-deps#service-consumer).
+
+**In summary:**  
+- The error means your local replica cannot create a canister with the mainnet ID.
+- The intended workflow is for `dfx deps deploy` to handle this, but it may not always work depending on your setup.
+- If you continue to have issues, ensure you are using the latest version of `dfx`, and consider restarting your local replica or removing any stale state.
+
+If the problem persists, the knowledge sources do not provide a direct solution for this specific error, and you may need to seek further support or check for updates to the `dfx` tool.
+```
