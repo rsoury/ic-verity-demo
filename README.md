@@ -61,6 +61,8 @@ Read more: [https://docs.verity.usher.so/](https://docs.verity.usher.so/)
    ```bash
    dfx deps deploy
    ```
+   
+   **Note**: If this step fails, please refer to the [Verity Managed Verifier](https://github.com/usherlabs/verity-dp/tree/main/ic/managed/verifier) to build and deploy it on your local IC node (which should be running via `dfx start`).
 
 8. Deploy the demo canister
 
