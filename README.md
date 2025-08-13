@@ -62,7 +62,7 @@ Read more: [https://docs.verity.usher.so/](https://docs.verity.usher.so/)
    dfx deps deploy
    ```
    
-   **Note**: If this step fails with the error outlined below, please refer to the [Verity Managed Verifier](https://github.com/usherlabs/verity-dp/tree/main/ic/managed/verifier) to build and deploy it on your local IC node (which should be running via `dfx start`).
+   **Note**: If this step fails with the error outlined below, please continue using the Local Managed Verifier Canister as detailed below.
 
 8. Deploy the demo canister
 
@@ -75,6 +75,12 @@ Read more: [https://docs.verity.usher.so/](https://docs.verity.usher.so/)
    ```bash
    dfx canister call canister canister_http
    ```
+
+## (Optional) Deploy Local Verity TLS Verifier Canister
+
+1. `dfx deploy local_verity_verifier`
+2. Replace the `VERITY_VERIFIER_CANISTER` in [`canister/lib.rs`](./canister/lib.rs) with the Canister ID of the newly deployed Verifier Cansister
+3. `dfx deploy canister`
 
 ## About the local service (merged from PROXY_README)
 

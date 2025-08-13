@@ -22,6 +22,16 @@
     "verity_verifier": {
       "type": "pull",
       "id": "yf57k-fyaaa-aaaaj-azw2a-cai"
+    },
+    "local_verity_verifier": {
+      "type": "custom",
+      "candid": "https://raw.githubusercontent.com/usherlabs/verity-dp/refs/heads/main/ic/managed/verifier/verity_verifier.did",
+      "wasm": "https://github.com/usherlabs/verity-dp/releases/latest/download/verity_ic_verifier_ic.wasm.gz",
+      "remote": {
+        "id": {
+          "ic": "yf57k-fyaaa-aaaaj-azw2a-cai"
+        }
+      }
     }
   }
 }
