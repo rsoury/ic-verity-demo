@@ -7,6 +7,12 @@ use candid::Principal;
 use candid::CandidType;
 // use verity_ic::verify::types::ProofResponse;
 
+// const VERITY_VERIFIER_CANISTER: &str = "yf57k-fyaaa-aaaaj-azw2a-cai";
+const VERITY_VERIFIER_CANISTER: &str = "uxrrr-q7777-77774-qaaaq-cai"; /// ! Insert your local Verity Verifier Canister ID here
+const VERITY_NOTARY_PUB_KEY: &str = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE9MsHbWBopn6RcLJU2g0cHtet6eJ5\nqWpNlRkhyuk6etCycIUYe7iv/khvHfOTOTwG8yfzGdQMJz9kehb7MUzCRg==\n-----END PUBLIC KEY-----";
+// const LOCAL_PROXY_URL: &str = "http://localhost:8080";
+const LOCAL_PROXY_URL: &str = "https://rnaew-58-111-92-108.a.free.pinggy.link"; ///! Insert your ngrok or pinggy link here...
+
 #[derive(Deserialize)]
 struct VerityResponse {
     data: u64,
@@ -56,12 +62,9 @@ fn greet(name: String) -> String {
 
 #[ic_cdk::update]
 async fn canister_http() -> Result<HttpRequestResult, String> {
-    // let notary_pub_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE9MsHbWBopn6RcLJU2g0cHtet6eJ5\nqWpNlRkhyuk6etCycIUYe7iv/khvHfOTOTwG8yfzGdQMJz9kehb7MUzCRg==\n-----END PUBLIC KEY-----";
-    let notary_pub_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEBv36FI4ZFszJa0DQFJ3wWCXvVLFr\ncRzMG5kaTeHGoSzDu6cFqx3uEWYpFGo6C0EOUgf+mEgbktLrXocv5yHzKg==\n-----END PUBLIC KEY-----";
-
     let arg: HttpRequestArgs = HttpRequestArgs {
         // TOOD: Change to deployed serverless function URL in production.
-        url: "https://a825880bc975.ngrok-free.app".to_string(),
+        url: LOCAL_PROXY_URL.to_string(),
         max_response_bytes: None,
         method: HttpMethod::GET,
         headers: vec![],
@@ -84,18 +87,16 @@ async fn canister_http() -> Result<HttpRequestResult, String> {
     // Verify the proof
     // make a request to the managed verifier canister
     // to get a response which would contain the verified/decrypted proofs sent
-    // let verifier_canister = state::get_verifier_canister().unwrap();
-    let verifier_canister = "uzt4z-lp777-77774-qaabq-cai";
 
     let stringified_proofs = vec![verity_response.proof];
 
     // make a request to the managed verifier canister
     // to get a response which would contain the verified/decrypted proofs sent
     let call_response = ic_cdk::call::Call::unbounded_wait(
-        Principal::from_text(verifier_canister).unwrap(),
+        Principal::from_text(VERITY_VERIFIER_CANISTER).unwrap(),
         "verify_proof_async",
     ).with_args(
-        &(&stringified_proofs, notary_pub_key),
+        &(&stringified_proofs, VERITY_NOTARY_PUB_KEY),
     )
     .with_cycles(100_000_000_000)
     .await

@@ -29,6 +29,8 @@ const defaultConfig: ProxyConfig = {
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+const VERITY_PROVER_URL = process.env.VERITY_PROVER_URL || "https://prover.verity.usher.so";
+
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: false, // Disable CSP for proxy
@@ -73,8 +75,7 @@ app.get('/config', (req, res) => {
 app.use('/', async (req, res) => {
   try{
     const client = new VerityClient({
-      prover_url: 'http://localhost:8080',
-      // prover_url: 'https://prover.verity.usher.so',
+      prover_url: VERITY_PROVER_URL,
       // apiKey: process.env.VERITY_API_KEY,
     });
 

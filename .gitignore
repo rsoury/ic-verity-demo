@@ -81,3 +81,5 @@ temp/
 # --- Misc binaries / debug ---
 *.dSYM/
 
+# ICP Deps
+deps
